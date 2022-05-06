@@ -1,0 +1,24 @@
+main {
+  width: 1600px;
+  margin: auto;
+}
+
+
+/* viewtemplate */
+.img-size {
+  width: 100%;
+  height: auto;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+.Template-txtBox {
+  margin-top: 30px;
+}
+
+.price-txt {
+  text-align: end;
+}
