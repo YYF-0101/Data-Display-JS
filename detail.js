@@ -13,7 +13,7 @@ function randerDetailData() {
   title = selectData.title
   price = selectData.price
   descrip = selectData.description
-  productUrl = `https://storage.googleapis.com/luxe_media/wwwroot/${selectData.productMedia[0].url}`
+  imgUrl = `https://storage.googleapis.com/luxe_media/wwwroot/${selectData.productMedia[0].url}`
   const detailTemplate = `
   <div class="detailTitle mgTop30">
   ${title}
@@ -23,7 +23,7 @@ function randerDetailData() {
 
   <div class="row">
     <div class="img-box col">
-      <img src="${productUrl}" alt="" class="img-size">
+      <img src="${imgUrl}" alt="" class="img-size">
     </div>
     <div class="col">
       <div>

@@ -1,9 +1,10 @@
-randerData()
+randerData(rawdata)
 createCateType()
 
-function randerData() {
+
+function randerData(data) {
   let randerTemplate = '' 
-  for(let product of rawdata) {
+  for(let product of data) {
     if(product.productMedia[0]) {
       title = product.title
       price = product.price
@@ -59,9 +60,9 @@ function createCateType() {
   document.getElementById('categoryTypelist').innerHTML = list
 }
 
-function getcategType(selectObject) {
-  let value = selectObject.value
-  console.log(value)
+function getcategType(param) {
+  // let value = e.value
+  console.log(param)
 
 
   // let data = ''
