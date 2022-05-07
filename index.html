@@ -9,8 +9,30 @@
   <title>Document</title>
 </head>
 <body>
+  <nav>
+    <h1>Luxe Dream Event Hire</h1>
+  </nav>
   <main>
-    <section>
+    <section class="row mgTop30">
+      <div class="col-md-12 col-lg-4">
+        <span>
+          Category
+        </span>
+        <select id="categoryTypelist" class="form-select" aria-label="Default select example" onchange="getcategType(this)">
+        </select>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <span>
+          Price
+        </span>
+      </div>
+      <div class="col-md-12 col-lg-4">
+        <span>
+          Sort
+        </span>
+      </div>
+    </section>
+    <section class="mgTop30">
       <div id="category" class="row"></div>
     </section>
   </main>

@@ -3,6 +3,14 @@ main {
   margin: auto;
 }
 
+nav > h1 {
+  padding-left: 5%;
+  background-color:ghostwhite;
+}
+
+.mgTop30 {
+  margin-top: 30px;
+}
 
 /* viewtemplate */
 .img-size {
@@ -15,10 +23,19 @@ img {
   margin: auto;
 }
 
-.Template-txtBox {
-  margin-top: 30px;
-}
-
 .price-txt {
   text-align: end;
+}
+
+/* detailTemplate */
+.returnBt {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 4px 24px;
+  font-size: 18px;
+}
+
+.detailTitle {
+  font-size: 40px;
 }
