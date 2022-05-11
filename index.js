@@ -1,6 +1,37 @@
-randerData(rawdata)
 createCateType()
+// spliteData(rawdata)
+randerData(rawdata)
+// randerPagination(rawdata)
+// eventListener()
 
+let array = []
+let arrayPrice = []
+let finalArray = []
+
+function createCateType() {
+  let OptionList = ''
+  let list = ''
+  for (let product of rawdata) {
+      if(product.prodType.typeName == "Hire") {
+        const productCategories = product.prodType.productCategory
+        productCategory = productCategories
+      }
+  }
+  for (const categoryTyprName of productCategory) {
+    const categoryId = categoryTyprName.categoryId
+    const categoryName = categoryTyprName.categoryName
+    const categoryOptionList = `
+      <option value="${categoryId}">${categoryName}</option>
+    `
+    OptionList += categoryOptionList
+    const allCate = `
+    <option selected>All Category</option>
+    `
+
+    list = allCate + OptionList
+  }
+  document.getElementById('categoryTypelist').innerHTML = list
+}
 
 function randerData(data) {
   let randerTemplate = '' 
@@ -34,39 +65,184 @@ function randerData(data) {
   document.getElementById('category').innerHTML = randerTemplate
 }
 
+let cateType = ''
+let priceMin = 0
+let priceMax = 500000
 
-function createCateType() {
-  let OptionList = ''
-  let list = ''
-  for (let product of rawdata) {
-      if(product.prodType.typeName == "Hire") {
-        const productCategories = product.prodType.productCategory
-        productCategory = productCategories
+function handlerCateType(params) {
+  cateType = parseInt(params.value)
+  console.log(cateType)
+  filter()
+}
+
+function handlerPrice(params) {
+
+  switch (params.value) {
+      case "0":
+      priceMin = 0
+      priceMax = 50000
+      console.log(priceMax)
+      break;
+    
+      case "100":
+      priceMin = 0
+      priceMax = 100
+      console.log(priceMax)
+      break;
+
+      case "500":
+      priceMin = 101
+      priceMax = 500
+      console.log(priceMax)
+      break;
+
+      case "1000":
+      priceMin = 501
+      priceMax = 1000
+      console.log(priceMax)
+      break;
+
+      case "1001":
+      priceMin = 1001 
+      priceMax = 50000
+      console.log(priceMax)
+      break;
+  
+    default:
+      break;
+  }
+  filter()
+}
+
+function filter() {
+  let filter = {
+    "categoryId": cateType,
+  }
+
+  let tempFilter = {};
+  for (key in filter) {
+    if (typeof(filter[key]) != "undefined" && typeof(filter[key] != "null" && filter[key] != null && filter[key] != '')) {
+      tempFilter[key] = filter[key];
+    }
+  }
+
+  console.log(tempFilter)
+
+  let resultArr = rawdata.filter(
+    (item) => {
+      let flag = false
+      for (let key in tempFilter) {
+        if (item.categoryId) {
+          if (item[key].toString().indexOf(tempFilter[key].toString()) >= 0 && item.price > priceMin && item.price < priceMax) {
+            flag = true
+            console.log(item)
+          }else {
+            flag = false
+            break
+          }
+        }
       }
-  }
-  for (const categoryTyprName of productCategory) {
-    const categoryId = categoryTyprName.categoryId
-    const categoryName = categoryTyprName.categoryName
-    const categoryOptionList = `
-      <option value="${categoryId}">${categoryName}</option>
-    `
-    OptionList += categoryOptionList
-    const allCate = `
-    <option selected>All Category</option>
-    `
+      if(flag) {
+        return item
+      }
+    }
+  )
 
-    list = allCate + OptionList
-  }
-  document.getElementById('categoryTypelist').innerHTML = list
+  console.log(resultArr)
+  randerData(resultArr)
 }
 
-function getcategType(param) {
-  // let value = e.value
-  console.log(param)
+// function filterCate(param) {
+//   let cateId = param.value
+//   if (array.length) {
+//     finalArray.length = 0
+//     for (let item of array) {
+//       if (item.categoryId == cateId) {
+//        finalArray.push(item)
+//        }
+//      }
+//     randerData(finalArray)
+
+//   }else {
+//     data = rawdata
+//   }
+
+//   if (isNaN(param.value)) {
+//     arrayCate = rawdata
+//   }
+// }
 
 
-  // let data = ''
-  // let newdata = ''
-  // newdata = data.push(item => item.categoryId == value)
-  // console.log(newdata)
+
+function randerPagination(data) {
+  let currPage = 1
+  let pageIndex = 0
+  let pagesize = 9
+  let randerPage = ''
+  if (!data.productMedia) {
+    var pageNumbers= Math.ceil(data.length/pagesize)
+  }
+  console.log(pageNumbers)
+
+  while (pageIndex < pageNumbers) {
+    pageIndex ++
+    const pageIndexTemplate = `
+    <li class="page-item"><a class="page-link" href="#">${pageIndex}</a></li>
+  `
+    randerPage += pageIndexTemplate
+  }
+  document.getElementById('page').innerHTML = randerPage
 }
+
+function spliteData (data) {
+  let pagesize = 9 
+  return result = Array
+    .from(Array(Math.ceil(data.length / pagesize)))
+    .map((_, i) => data.slice(i * pagesize, (i + 1) * pagesize));
+}
+
+function eventListener() { 
+  document.getElementById("previous").addEventListener("click", previous);
+  document.getElementById("next").addEventListener("click", next);
+}
+
+function previous() {
+  console.log("im previous")
+}
+
+function next() {
+  console.log("im next")
+}
+
+// function init(){
+//   document.getElementById("next").onclick = function() { 
+//     pager("next");
+//     return false;
+//   };
+//   document.getElementById("previous").onclick = function() { 
+//     pager("previous"); 
+//     return false;
+//   };
+// }
+
+
+// function pager(action, page) {
+//   switch (action) {
+//     case "next":
+//       if( (page + 1) < pageNumbers ){ 
+//         ++page;
+//         console.log(page)
+//       }
+//       console.log(page)
+//       break;
+     
+//     case "previous":
+//       if( (page - 1) >= 1 ){
+//          --page;
+//       }
+//       break;
+
+//     default:
+//       break;
+//   }
+// }
