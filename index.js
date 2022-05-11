@@ -4,9 +4,10 @@ randerData(rawdata)
 // randerPagination(rawdata)
 // eventListener()
 
-let array = []
-let arrayPrice = []
-let finalArray = []
+
+let cateType = ''
+let priceMin = 0
+let priceMax = 500000
 
 function createCateType() {
   let OptionList = ''
@@ -25,7 +26,7 @@ function createCateType() {
     `
     OptionList += categoryOptionList
     const allCate = `
-    <option selected>All Category</option>
+    <option selected value="0">All Category</option>
     `
 
     list = allCate + OptionList
@@ -65,13 +66,8 @@ function randerData(data) {
   document.getElementById('category').innerHTML = randerTemplate
 }
 
-let cateType = ''
-let priceMin = 0
-let priceMax = 500000
-
 function handlerCateType(params) {
   cateType = parseInt(params.value)
-  console.log(cateType)
   filter()
 }
 
@@ -126,16 +122,13 @@ function filter() {
     }
   }
 
-  console.log(tempFilter)
-
   let resultArr = rawdata.filter(
     (item) => {
       let flag = false
       for (let key in tempFilter) {
         if (item.categoryId) {
-          if (item[key].toString().indexOf(tempFilter[key].toString()) >= 0 && item.price > priceMin && item.price < priceMax) {
+          if (item[key].toString().split(",").indexOf(cateType.toString()) >= 0  && item.price > priceMin && item.price < priceMax) {
             flag = true
-            console.log(item)
           }else {
             flag = false
             break
@@ -151,27 +144,6 @@ function filter() {
   console.log(resultArr)
   randerData(resultArr)
 }
-
-// function filterCate(param) {
-//   let cateId = param.value
-//   if (array.length) {
-//     finalArray.length = 0
-//     for (let item of array) {
-//       if (item.categoryId == cateId) {
-//        finalArray.push(item)
-//        }
-//      }
-//     randerData(finalArray)
-
-//   }else {
-//     data = rawdata
-//   }
-
-//   if (isNaN(param.value)) {
-//     arrayCate = rawdata
-//   }
-// }
-
 
 
 function randerPagination(data) {
