@@ -1,6 +1,7 @@
 createCateType()
 // spliteData(rawdata)
 randerData(rawdata)
+console.log(rawdata)
 // randerPagination(rawdata)
 // eventListener()
 
@@ -8,6 +9,8 @@ randerData(rawdata)
 let cateType = ''
 let priceMin = 0
 let priceMax = 500000
+
+let resultArr = ''
 
 function createCateType() {
   let OptionList = ''
@@ -115,20 +118,24 @@ function filter() {
     "categoryId": cateType,
   }
 
-  let tempFilter = {};
-  for (key in filter) {
-    if (typeof(filter[key]) != "undefined" && typeof(filter[key] != "null" && filter[key] != null && filter[key] != '')) {
-      tempFilter[key] = filter[key];
-    }
-  }
+  // let tempFilter = {};
+  // for (key in filter) {
+  //   if (typeof(filter[key]) != "undefined" && typeof(filter[key] != "null" && filter[key] != null && filter[key] != '')) {
+  //     tempFilter[key] = filter[key];
+  //   }
+  // }
 
-  let resultArr = rawdata.filter(
+  resultArr = rawdata.filter(
     (item) => {
       let flag = false
-      for (let key in tempFilter) {
+      for (let key in filter) {
         if (item.categoryId) {
           if (item[key].toString().split(",").indexOf(cateType.toString()) >= 0  && item.price > priceMin && item.price < priceMax) {
             flag = true
+          }else if (!cateType) {
+            if (item.price > priceMin && item.price < priceMax) {
+              flag = true
+            }
           }else {
             flag = false
             break
@@ -145,6 +152,53 @@ function filter() {
   randerData(resultArr)
 }
 
+let ascendbtn = document.getElementById('ascendClick')
+console.log(ascendbtn)
+ascendbtn.addEventListener("click",sortByAscend)
+let decendbtn = document.getElementById('decendClick')
+decendbtn.addEventListener("click",sortByDecend)
+let resetbtn = document.getElementById('resetClick')
+resetbtn.addEventListener("click",reset)
+
+function sortByAscend() {
+  if (resultArr) {
+    resultSortByA = resultArr.sort(function (a,b) {
+      return a.price - b.price
+    })
+  } else {
+    resultSortByA = rawdata.sort(function (a,b) {
+      return a.price - b.price
+    })
+  }
+  console.log(resultSortByA)
+  randerData(resultSortByA)
+}
+function sortByDecend() {
+  if (resultArr) {
+    resultSortByD = resultArr.sort(function (a,b) {
+      return b.price - a.price
+    })
+  } else {
+    resultSortByD = rawdata.sort(function (a,b) {
+      return b.price - a.price
+    })
+  }
+  console.log(resultSortByD)
+  randerData(resultSortByD)
+}
+function reset() {
+  if (resultArr) {
+    resultReset = resultArr.sort(function (a,b) {
+      return a.prodId - b.prodId
+    })
+  } else {
+    resultReset = rawdata.sort(function (a,b) {
+      return a.prodId - b.prodId
+    })
+  }
+  console.log(resultReset)
+  randerData(resultReset)
+}
 
 function randerPagination(data) {
   let currPage = 1
