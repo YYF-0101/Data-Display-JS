@@ -22,7 +22,7 @@ function randerDetailData() {
   <hr />
 
   <div class="row">
-    <div class="img-box col">
+    <div class="detail-img-box col">
       <img src="${imgUrl}" alt="" class="img-size">
     </div>
     <div class="col">

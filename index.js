@@ -49,15 +49,15 @@ function randerData(data) {
       const viewTemplate = `
       <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mgTop30">
           <a href="${urlparam}" class="img-Link">
-            <div class="img-box">
+            <div class="index-img-box">
               <img src="${productUrl}" alt="" class="img-size">
             </div>
-            <div class="mgTop30 row align-items-center">
+            <div class="cardText mgTop30 row align-items-center">
               <div class="col" >
                 ${title}
               </div>
               <div class="col price-txt">
-                ${price}
+                $${price}
               </div>
             </div>
           </a>
@@ -161,6 +161,8 @@ let resetbtn = document.getElementById('resetClick')
 resetbtn.addEventListener("click",reset)
 
 function sortByAscend() {
+  ascendbtn.classList.add("disabled")
+  decendbtn.classList.remove("disabled")
   if (resultArr) {
     resultSortByA = resultArr.sort(function (a,b) {
       return a.price - b.price
@@ -174,6 +176,8 @@ function sortByAscend() {
   randerData(resultSortByA)
 }
 function sortByDecend() {
+  decendbtn.classList.add("disabled")
+  ascendbtn.classList.remove("disabled")
   if (resultArr) {
     resultSortByD = resultArr.sort(function (a,b) {
       return b.price - a.price
@@ -187,6 +191,8 @@ function sortByDecend() {
   randerData(resultSortByD)
 }
 function reset() {
+  ascendbtn.classList.remove("disabled")
+  decendbtn.classList.remove("disabled")
   if (resultArr) {
     resultReset = resultArr.sort(function (a,b) {
       return a.prodId - b.prodId
