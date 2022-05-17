@@ -1,6 +1,6 @@
-main {
-  width: 1600px;
-  margin: auto;
+main, nav {
+  max-width: 1600px;
+  margin:auto;
 }
 
 nav > h3 {
@@ -41,6 +41,11 @@ a:hover {
 
 .price-txt {
   text-align: end;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* detailTemplate */

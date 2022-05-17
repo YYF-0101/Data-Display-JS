@@ -1,9 +1,18 @@
-createCateType()
+ 
 // spliteData(rawdata)
 randerData(rawdata)
-console.log(rawdata)
 // randerPagination(rawdata)
 // eventListener()
+
+let state = []
+
+onInit()
+
+function onInit() {
+  createCateType()
+  const webUrl = window.location.search.substring(1)
+  console.log(webUrl)
+}
 
 
 let cateType = ''
@@ -40,23 +49,23 @@ function createCateType() {
 function randerData(data) {
   let randerTemplate = '' 
   for(let product of data) {
-    if(product.productMedia[0]) {
+    if(product.productMedia?.[0]) {
       title = product.title
       price = product.price
       id = product.prodId
       urlparam = `./detail.html?prodId=${id}`
       productUrl = `https://storage.googleapis.com/luxe_media/wwwroot/${product.productMedia[0].url}`
       const viewTemplate = `
-      <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 mgTop30">
+      <div class="col-md-6 col-lg-4 col-xl-3 mgTop30">
           <a href="${urlparam}" class="img-Link">
             <div class="index-img-box">
               <img src="${productUrl}" alt="" class="img-size">
             </div>
             <div class="cardText mgTop30 row align-items-center">
-              <div class="col" >
+              <div class="col-10" >
                 ${title}
               </div>
-              <div class="col price-txt">
+              <div class="col-2 price-txt">
                 $${price}
               </div>
             </div>
@@ -129,11 +138,11 @@ function filter() {
     (item) => {
       let flag = false
       for (let key in filter) {
-        if (item.categoryId) {
-          if (item[key].toString().split(",").indexOf(cateType.toString()) >= 0  && item.price > priceMin && item.price < priceMax) {
+        if (item.categoryId && item.productMedia[0]) {
+          if (item[key].toString().split(",").indexOf(cateType.toString()) >= 0  && item.price >= priceMin && item.price <= priceMax) {
             flag = true
           }else if (!cateType) {
-            if (item.price > priceMin && item.price < priceMax) {
+            if (item.price >= priceMin && item.price <= priceMax) {
               flag = true
             }
           }else {
@@ -147,13 +156,10 @@ function filter() {
       }
     }
   )
-
-  console.log(resultArr)
-  randerData(resultArr)
+  pager(resultArr)
 }
 
 let ascendbtn = document.getElementById('ascendClick')
-console.log(ascendbtn)
 ascendbtn.addEventListener("click",sortByAscend)
 let decendbtn = document.getElementById('decendClick')
 decendbtn.addEventListener("click",sortByDecend)
@@ -206,37 +212,12 @@ function reset() {
   randerData(resultReset)
 }
 
-function randerPagination(data) {
-  let currPage = 1
-  let pageIndex = 0
-  let pagesize = 9
-  let randerPage = ''
-  if (!data.productMedia) {
-    var pageNumbers= Math.ceil(data.length/pagesize)
-  }
-  console.log(pageNumbers)
 
-  while (pageIndex < pageNumbers) {
-    pageIndex ++
-    const pageIndexTemplate = `
-    <li class="page-item"><a class="page-link" href="#">${pageIndex}</a></li>
-  `
-    randerPage += pageIndexTemplate
-  }
-  document.getElementById('page').innerHTML = randerPage
-}
-
-function spliteData (data) {
-  let pagesize = 9 
-  return result = Array
-    .from(Array(Math.ceil(data.length / pagesize)))
-    .map((_, i) => data.slice(i * pagesize, (i + 1) * pagesize));
-}
-
-function eventListener() { 
-  document.getElementById("previous").addEventListener("click", previous);
-  document.getElementById("next").addEventListener("click", next);
-}
+  // document.getElementById("previous").addEventListener("click", previous);
+  // document.getElementById("next").addEventListener("click", next);
+  // let obutton = document.getElementById("page").getElementsByTagName("li")
+  // obutton.addEventListener("click",currentPage)
+  // console.log(obutton)
 
 function previous() {
   console.log("im previous")
@@ -257,6 +238,40 @@ function next() {
 //   };
 // }
 
+function pager() {
+  let pageSize = 8
+  let pageIndex = 0
+  let randerPage = ''
+  let currentPage = 0
+  
+  var pageNumbers= Math.ceil(resultArr.length/pageSize)
+
+  console.log(pageNumbers)
+
+  while (pageIndex < pageNumbers) {
+    pageIndex ++
+    const pageIndexTemplate = `
+    <li class="page-item"><a class="page-link" href="#">${pageIndex}</a></li>
+  `
+    randerPage += pageIndexTemplate
+  }
+
+  document.getElementById('page').innerHTML = randerPage
+  resultArr = Array
+    .from(Array(Math.ceil(resultArr.length / pageSize)))
+    .map((_, i) => resultArr.slice(i * pageSize, (i + 1) * pageSize));
+  
+    console.log(resultArr)
+  let ArrNumber = resultArr.length
+
+
+
+  if (ArrNumber == pageNumbers) {
+    console.log(resultArr)
+    randerData(resultArr?.[0])
+    // resultArr =resultArr[currentPage]
+  }
+}
 
 // function pager(action, page) {
 //   switch (action) {
