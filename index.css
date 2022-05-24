@@ -48,6 +48,10 @@ a:hover {
   margin-right: 0;
 }
 
+.active {
+  color: black;
+}
+
 /* detailTemplate */
 .returnBt {
   display: block;

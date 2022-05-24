@@ -18,14 +18,14 @@
         <span>
           Category
         </span>
-        <select id="categoryTypelist" class="form-select" onchange="handlerCateType(this)">
+        <select id="categoryTypelist" class="form-select" onchange="handler('category',value)">
         </select>
       </div>
       <div class="col-md-12 col-lg-4">
         <span>
           Price
         </span>
-        <select id="price" class="form-select" onchange="handlerPrice(this)">
+        <select id="price" class="form-select" onchange="handler('priceRange',value)">
           <option value="0">All</option>
           <option value="100">0 - 100</option>
           <option value="500">101 - 500</option>
@@ -38,12 +38,9 @@
           Sort
         </span>
         <div>
-          <button id="ascendClick" class="btn btn-outline-dark" value="Ascending">Ascending</button>
-          <button id="decendClick" class="btn btn-outline-dark" value="Decending">Decending</button>
-          <button id="resetClick" class="btn btn-danger" value="Reset">Reset</button>
-          <!-- <input id="ascendClick" class="btn btn-outline-dark" type="Ascending" value="Ascending">
-          <input id="decendClick" class="btn btn-outline-dark" type="Decending" value="Decending">
-          <input id="resetClick" class="btn btn-primary" type="reset" value="Reset"> -->
+          <button id="ascendClick" class="btn btn-outline-dark" value="Ascending" onclick="handler('sort',value)">Ascending</button>
+          <button id="decendClick" class="btn btn-outline-dark" value="Decending" onclick="handler('sort',value)">Decending</button>
+          <button id="resetClick" class="btn btn-danger" value="Reset" onclick="handler('reset',value)">Reset</button>
         </div>
       </div>
     </section>
@@ -56,11 +53,6 @@
           <a class="page-link" href="#">Previous</a>
         </li>
         <ul id="page" class="pagination" ></ul>
-        <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active" aria-current="page">
-          <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
         <li class="page-item" id="next">
           <a class="page-link" href="#">Next</a>
         </li>
