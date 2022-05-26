@@ -1,4 +1,6 @@
 let state = []
+let cateState = []
+let priceRangeState = []
 
 onInit()
 
@@ -113,31 +115,52 @@ function handler(key,value) {
 }
 
 function categoryFilter(cateId) {
-    state = []
-    console.log(cateId)
-    for (const data of rawdata) {
-      if (data.categoryId === parseInt(cateId)) {
-        state.push(data)
-      }
+  cateState = []
+  for (const data of rawdata) {
+    if (data.categoryId === parseInt(cateId)) {
+      cateState.push(data)
     }
-    console.log(state)
-    randerData(state)
+  }
+  filter()
 }
 
 function priceRangeFilter(priceRange) {
-  console.log(priceRange)
-  console.log(state)
-  let priceRangeState = []
-  for (const data of state) {
+  priceRangeState = []
+  for (const data of rawdata) {
     if (priceRange == 0) {
-      priceRangeState = state
+      priceRangeState = rawdata
     }
     if (priceRange == 100 && data.price > 0 && data.price < 100 ) {        
       priceRangeState.push(data)
     }
+    if (priceRange == 500 && data.price > 101 && data.price < 500 ) {        
+      priceRangeState.push(data)
+    }
+    if (priceRange == 1000 && data.price > 501 && data.price < 1000 ) {        
+      priceRangeState.push(data)
+    }
+    if (priceRange == 1001 && data.price > 1000 ) {        
+      priceRangeState.push(data)
+    }
   }
-  console.log(priceRangeState)
-  randerData(priceRangeState)
+  filter()
+}
+
+function filter() {
+  const cateArr = cateState
+  const priceArr = priceRangeState
+  if (cateArr.length ) {
+    state = cateArr
+  }
+  if (priceArr.length ) {
+    state = priceArr
+  }
+  if (cateState.length && priceRangeState.length) {
+    state =  Array.isArray(cateArr) ? cateArr.filter(item => priceArr.indexOf(item) != -1) : []
+    console.log(state)
+  }
+  state &&
+  (randerData(state))
 }
 
 function ascending(value) {
@@ -161,7 +184,6 @@ function decending(value) {
           return b.price - a.price
         })
       } else {
-        console.log("here")
         resultSortByD = rawdata.sort(function (a,b) {
           return b.price - a.price
         })
@@ -172,16 +194,11 @@ function decending(value) {
 }
 
 function reset() {
-  if (state) {
-    resultReset = state.sort(function (a,b) {
-      return a.prodId - b.prodId
-    })
-  } else {
-    resultReset = rawdata.sort(function (a,b) {
-      return a.prodId - b.prodId
-    })
-  }
-  randerData(resultReset)
+  state = []
+  state = rawdata.sort(function (a,b) {
+    return a.prodId - b.prodId
+  })
+  randerData(state)
 }
 
 function setUrlSearchParam(key,value) {
@@ -198,7 +215,8 @@ function delUrlSearchParam() {
   window.history.pushState({ path: url.href }, '', url.href)
   document.getElementById('categoryTypelist').value = 0
   document.getElementById('price').value = 0
-  randerData(rawdata)
+  document.getElementById('ascendClick').removeAttribute("disabled","")
+  document.getElementById('decendClick').removeAttribute("disabled","")
 }
 
 function urlRander(key,value) {
