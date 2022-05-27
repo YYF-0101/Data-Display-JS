@@ -1,6 +1,6 @@
 let state = []
-let cateState = []
-let priceRangeState = []
+// let cateState = []
+// let priceRangeState = []
 
 onInit()
 
@@ -115,20 +115,26 @@ function handler(key,value) {
 }
 
 function categoryFilter(cateId) {
-  cateState = []
+  // cateState = []
+  state = []
+  document.getElementById('price').value = 0
   for (const data of rawdata) {
-    if (data.categoryId === parseInt(cateId)) {
-      cateState.push(data)
+    if (data.categoryId === parseInt(cateId) || cateId == 0) {
+      // cateState.push(data)
+      state.push(data)
     }
   }
-  filter()
+  randerData(state)
+  // filter()
 }
 
 function priceRangeFilter(priceRange) {
   priceRangeState = []
-  for (const data of rawdata) {
+  state ? datas = state : datas = rawdata
+  console.log(datas)
+  for (const data of datas) {
     if (priceRange == 0) {
-      priceRangeState = rawdata
+      priceRangeState = datas
     }
     if (priceRange == 100 && data.price > 0 && data.price < 100 ) {        
       priceRangeState.push(data)
@@ -143,29 +149,32 @@ function priceRangeFilter(priceRange) {
       priceRangeState.push(data)
     }
   }
-  filter()
+  randerData(priceRangeState)
+  // filter()
 }
 
-function filter() {
-  const cateArr = cateState
-  const priceArr = priceRangeState
-  if (cateArr.length ) {
-    state = cateArr
-  }
-  if (priceArr.length ) {
-    state = priceArr
-  }
-  if (cateState.length && priceRangeState.length) {
-    state =  Array.isArray(cateArr) ? cateArr.filter(item => priceArr.indexOf(item) != -1) : []
-    console.log(state)
-  }
-  state &&
-  (randerData(state))
-}
+// function filter() {
+//   const cateArr = cateState
+//   const priceArr = priceRangeState
+//   if (cateArr.length ) {
+//     state = cateArr
+//   }
+//   if (priceArr.length ) {
+//     state = priceArr
+//   }
+//   if (cateState.length && priceRangeState.length) {
+//     state =  Array.isArray(cateArr) ? cateArr.filter(item => priceArr.indexOf(item) != -1) : []
+//     console.log(state)
+//   }
+//   state &&(
+//     spliteData(state),
+//     randerData(state)
+//   )
+// }
 
 function ascending(value) {
-  if (value === 'Ascending' && state != '') {
-        resultSortByA = state.sort(function (a,b) {
+  if (value === 'Ascending' && priceRangeState != '') {
+        resultSortByA = priceRangeState.sort(function (a,b) {
           return a.price - b.price
         })
       } else {
@@ -179,8 +188,8 @@ function ascending(value) {
 }
 
 function decending(value) {
-  if (value === 'Decending' && state != '') {
-        resultSortByD = state.sort(function (a,b) {
+  if (value === 'Decending' && priceRangeState != '') {
+        resultSortByD = priceRangeState.sort(function (a,b) {
           return b.price - a.price
         })
       } else {
@@ -243,4 +252,11 @@ function urlRander(key,value) {
       document.getElementById('decendClick').setAttribute("disabled","")
     }
   }
+}
+
+function spliteData (data) {
+  let pagesize = 9 
+  return result = Array
+    .from(Array(Math.ceil(data.length / pagesize)))
+    .map((_, i) => data.slice(i * pagesize, (i + 1) * pagesize));
 }
