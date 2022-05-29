@@ -1,4 +1,9 @@
 let state = []
+let priceRangeState = []
+currentPage = 1
+postsPerPage = 8
+
+
 // let cateState = []
 // let priceRangeState = []
 
@@ -8,7 +13,7 @@ function onInit() {
   createCateType()
   const webUrl = window.location.search.substring(1)
   console.log(window.location.search.substring(1))
-   webUrl ? urlHandler(webUrl) : randerData(rawdata)
+   webUrl ? urlHandler(webUrl) : reset(rawdata)
 }
 
 function urlHandler (params) {
@@ -115,23 +120,20 @@ function handler(key,value) {
 }
 
 function categoryFilter(cateId) {
-  // cateState = []
   state = []
+  priceRangeState = []
   document.getElementById('price').value = 0
   for (const data of rawdata) {
     if (data.categoryId === parseInt(cateId) || cateId == 0) {
-      // cateState.push(data)
       state.push(data)
     }
   }
-  randerData(state)
-  // filter()
+  randerPagination(state)
 }
 
 function priceRangeFilter(priceRange) {
   priceRangeState = []
-  state ? datas = state : datas = rawdata
-  console.log(datas)
+  state.length ? datas = state : datas = rawdata
   for (const data of datas) {
     if (priceRange == 0) {
       priceRangeState = datas
@@ -149,8 +151,7 @@ function priceRangeFilter(priceRange) {
       priceRangeState.push(data)
     }
   }
-  randerData(priceRangeState)
-  // filter()
+  randerPagination(priceRangeState)
 }
 
 // function filter() {
@@ -178,13 +179,13 @@ function ascending(value) {
           return a.price - b.price
         })
       } else {
-        resultSortByA = rawdata.sort(function (a,b) {
+        resultSortByA = state.sort(function (a,b) {
           return a.price - b.price
         })
       }
   document.getElementById('ascendClick').setAttribute("disabled","")
   document.getElementById('decendClick').removeAttribute("disabled","")
-  randerData(resultSortByA)
+  randerPagination(resultSortByA)
 }
 
 function decending(value) {
@@ -193,13 +194,13 @@ function decending(value) {
           return b.price - a.price
         })
       } else {
-        resultSortByD = rawdata.sort(function (a,b) {
+        resultSortByD = state.sort(function (a,b) {
           return b.price - a.price
         })
       }
   document.getElementById('decendClick').setAttribute("disabled","")
   document.getElementById('ascendClick').removeAttribute("disabled","")
-  randerData(resultSortByD)
+  randerPagination(resultSortByD)
 }
 
 function reset() {
@@ -207,7 +208,7 @@ function reset() {
   state = rawdata.sort(function (a,b) {
     return a.prodId - b.prodId
   })
-  randerData(state)
+  randerPagination(state)
 }
 
 function setUrlSearchParam(key,value) {
@@ -254,9 +255,48 @@ function urlRander(key,value) {
   }
 }
 
-function spliteData (data) {
-  let pagesize = 9 
-  return result = Array
-    .from(Array(Math.ceil(data.length / pagesize)))
-    .map((_, i) => data.slice(i * pagesize, (i + 1) * pagesize));
+
+
+function randerPagination (params) {
+  const pageNumbers = []
+  let pageTemplate = ''
+  pageLength =  Math.ceil(params.length / postsPerPage)
+  for (let number = 0; number < pageLength; number++) {
+      pageNumbers.push(number)
+  }
+  for (let number = 0; number < pageNumbers.length; number++) {
+    const Template = `
+    <li onclick = "setPageNumber(value)" value = ${number} className = "page-item">
+    <a   class = "page-link"> ${number + 1 }</a>
+    </li>
+    `
+    pageTemplate += Template
+  }
+  document.getElementById("page").innerHTML = pageTemplate
+  setPageNumber(0)
+  setCurrentPost(params)
+}
+
+function setPageNumber(value) {
+  currentPage = value + 1
+  if (priceRangeState.length === 0) {
+    setCurrentPost (state)
+  } else {
+    setCurrentPost (priceRangeState)
+    console.log(priceRangeState)
+  }
+}
+
+function setCurrentPost (params) {
+  const newstate = []
+  for(let product of params) {
+    if(product.productMedia?.[0]) {
+      newstate.push(product)
+    }
+}
+  const indexOfLastPost = currentPage * postsPerPage
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentPosts = newstate.slice(indexOfFirstPost, indexOfLastPost)
+  randerData(currentPosts)
+  console.log(currentPosts)
 }
